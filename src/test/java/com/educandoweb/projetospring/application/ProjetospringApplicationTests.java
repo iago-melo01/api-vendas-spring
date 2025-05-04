@@ -1,4 +1,4 @@
-package com.educandoweb.projetospring;
+package com.educandoweb.projetospring.application;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
