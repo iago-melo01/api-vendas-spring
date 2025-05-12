@@ -3,7 +3,10 @@ package com.educandoweb.projetospring.entities;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
 @Entity
 @Table(name = "tb_user")
 public class User implements Serializable {
@@ -16,6 +19,11 @@ public class User implements Serializable {
     private String email;
     private String password;
     private String phone;
+    @OneToMany (mappedBy ="client") // mapeado pelo atributo "client"
+    //que é o valor atribuido pro objeto user na classe Order
+    private List<Order> orders = new ArrayList<>();
+
+
 
     public User(){}
 
@@ -37,7 +45,9 @@ public class User implements Serializable {
     public String getName() {
         return name;
     }
-
+    public List<Order> getOrders() {
+        return orders;
+    }
     public void setName(String name) {
         this.name = name;
     }
