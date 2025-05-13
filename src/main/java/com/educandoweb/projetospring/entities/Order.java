@@ -24,9 +24,15 @@ public class Order implements Serializable {
     @JoinColumn(name = "client_id") // parametro deve ser o nome da chave estrangeira da tabela que deseja-se juntar
     private User client;
 
-    public Order(Integer id, Instant moment, User client) {
+    @Column(name = "status")
+    private Integer orderStatus;
+
+
+
+    public Order(Integer id, Instant moment, OrderStatus orderStatus, User client) {
         this.id = id;
         this.moment = moment;
+        this.orderStatus = orderStatus.getCode();
         this.client = client;
     }
 
@@ -50,6 +56,14 @@ public class Order implements Serializable {
         return id;
     }
 
+    public OrderStatus getOrderStatus() {
+        return OrderStatus.valueOf(orderStatus);
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        if(orderStatus != null)
+            this.orderStatus = orderStatus.getCode();
+    }
     public void setId(Integer id) {
         this.id = id;
     }
