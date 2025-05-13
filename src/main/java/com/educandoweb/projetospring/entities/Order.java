@@ -1,5 +1,6 @@
 package com.educandoweb.projetospring.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -16,14 +17,16 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern ="yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     private Instant moment;
+
     @ManyToOne
     @JoinColumn(name = "client_id") // parametro deve ser o nome da chave estrangeira da tabela que deseja-se juntar
     private User client;
 
-    public Order(Integer id, Instant instant, User client) {
+    public Order(Integer id, Instant moment, User client) {
         this.id = id;
-        this.moment = instant;
+        this.moment = moment;
         this.client = client;
     }
 
@@ -51,12 +54,12 @@ public class Order implements Serializable {
         this.id = id;
     }
 
-    public Instant getInstant() {
+    public Instant getMoment() {
         return this.moment;
     }
 
-    public void setInstant(Instant instant) {
-        this.moment = instant;
+    public void setMoment(Instant moment) {
+        this.moment = moment;
     }
 
     public User getClient() {

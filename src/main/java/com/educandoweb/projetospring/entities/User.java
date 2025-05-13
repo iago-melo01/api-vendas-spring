@@ -1,5 +1,6 @@
 package com.educandoweb.projetospring.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -19,6 +20,7 @@ public class User implements Serializable {
     private String email;
     private String password;
     private String phone;
+    @JsonIgnore
     @OneToMany (mappedBy ="client") // mapeado pelo atributo "client"
     //que é o valor atribuido pro objeto user na classe Order
     private List<Order> orders = new ArrayList<>();
