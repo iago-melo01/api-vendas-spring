@@ -1,4 +1,4 @@
-package com.educandoweb.projetospring.entities;
+package com.educandoweb.projetospring.entities.enums;
 
 public enum OrderStatus {
     WAITING_PAYMENT(1),

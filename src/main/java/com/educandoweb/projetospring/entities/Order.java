@@ -1,5 +1,6 @@
 package com.educandoweb.projetospring.entities;
 
+import com.educandoweb.projetospring.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
