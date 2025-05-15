@@ -22,7 +22,7 @@ public class Order implements Serializable {
     private Instant moment;
 
     @ManyToOne
-    @JoinColumn(name = "client_id") // parametro deve ser o nome da chave estrangeira da tabela que deseja-se juntar
+    @JoinColumn(name = "client_idd")
     private User client;
 
     @Column(name = "status")
