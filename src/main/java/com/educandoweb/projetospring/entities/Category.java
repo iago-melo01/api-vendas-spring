@@ -1,5 +1,6 @@
 package com.educandoweb.projetospring.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -17,12 +18,16 @@ private static final long serialVersionUID = 1L;
     private Long id;
 
     private String name;
-
+    @JsonIgnore
     @ManyToMany(mappedBy = "categories")
     private Set<Product> products = new HashSet<>();
 
     public Category(){
 
+    }
+
+    public Set<Product> getProducts() {
+        return products;
     }
 
     public Category(Long id, String name){

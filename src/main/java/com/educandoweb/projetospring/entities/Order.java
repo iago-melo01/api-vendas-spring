@@ -22,7 +22,7 @@ public class Order implements Serializable {
     private Instant moment;
 
     @ManyToOne
-    @JoinColumn(name = "client_idd")
+    @JoinColumn(name = "client_id")
     private User client;
 
     @Column(name = "status")
