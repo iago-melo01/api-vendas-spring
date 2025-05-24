@@ -1,10 +1,12 @@
 package com.educandoweb.projetospring.entities;
 
 import com.educandoweb.projetospring.entities.pk.OrderItemPK;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -13,11 +15,13 @@ import java.util.Objects;
 public class OrderItem implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    private OrderItemPK id;
-
-    private Integer quantity;
     private Double price;
+    private Integer quantity;
+    @EmbeddedId
+    private OrderItemPK id = new OrderItemPK();
+    //sempre que for criar uma classe auxiliar que for representar um id compost
+    //"EmbeddedId", é necessário que ela seja instanciada antes
+
 
     public OrderItem(Order order, Product product, Integer quantity, Double price) {
         id.setOrder(order);
@@ -29,7 +33,7 @@ public class OrderItem implements Serializable {
 
 
     public OrderItem(){}
-
+    @JsonIgnore
     public Order getOrder(){
         return id.getOrder();
     }

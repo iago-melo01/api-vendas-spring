@@ -2,6 +2,7 @@ package com.educandoweb.projetospring.entities.pk;
 
 import com.educandoweb.projetospring.entities.Order;
 import com.educandoweb.projetospring.entities.Product;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.JoinColumn;
@@ -32,6 +33,7 @@ public class OrderItemPK implements Serializable {
     public int hashCode() {
         return Objects.hash(order, product);
     }
+
 
     public Order getOrder() {
         return order;

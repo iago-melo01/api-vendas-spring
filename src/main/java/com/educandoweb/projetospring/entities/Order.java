@@ -2,11 +2,14 @@ package com.educandoweb.projetospring.entities;
 
 import com.educandoweb.projetospring.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name= "tb_order")
@@ -21,6 +24,7 @@ public class Order implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern ="yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     private Instant moment;
 
+
     @ManyToOne
     @JoinColumn(name = "client_id")
     private User client;
@@ -29,6 +33,8 @@ public class Order implements Serializable {
     private Integer orderStatus;
 
 
+    @OneToMany(mappedBy = "id.order")
+    private Set<OrderItem> items = new HashSet<>();
 
     public Order(Integer id, Instant moment, OrderStatus orderStatus, User client) {
         this.id = id;
@@ -36,6 +42,12 @@ public class Order implements Serializable {
         this.orderStatus = orderStatus.getCode();
         this.client = client;
     }
+    public Order( Instant moment, OrderStatus orderStatus, User client) {
+        this.moment = moment;
+        this.orderStatus = orderStatus.getCode();
+        this.client = client;
+    }
+
 
     public Order(){
 
@@ -67,6 +79,11 @@ public class Order implements Serializable {
     }
     public void setId(Integer id) {
         this.id = id;
+    }
+
+
+    public Set<OrderItem> getItems() {
+        return items;
     }
 
     public Instant getMoment() {

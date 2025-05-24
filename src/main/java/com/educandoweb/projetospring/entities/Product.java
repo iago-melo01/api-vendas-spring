@@ -1,11 +1,14 @@
 package com.educandoweb.projetospring.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "tb_products")
@@ -21,9 +24,14 @@ public class Product implements Serializable {
     private Double price;
     private String imgUrl;
 
+    @OneToMany(mappedBy = "id.product")
+    private Set<OrderItem> orderItemList = new HashSet<>();
+
+    private Set<Order> orders = getOrders();
+
     @ManyToMany
     @JoinTable(
-            name ="tb_product_category",
+            name = "tb_product_category",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )/* foi criado uma tabela com o nome tb_product_category, que vai representar a junção das duas tabelas(product e category)
@@ -105,4 +113,23 @@ public class Product implements Serializable {
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
     }
+
+    @JsonIgnore
+    public Set<Order> getOrders() {
+//        Set<Order> orders = orderItemList.
+//                stream().
+//                map(OrderItem::getOrder).     //Uma stream é mais pesada de processar do que uma
+//                        collect(Collectors.toSet());  // simples interação pela lista
+//        return orders;
+
+        //Mas para melhor legibilidade e para casos de programas
+        //  não necessariamente escaláveis, pode-se utilizar
+        Set<Order> orders = new HashSet<>();
+        for (OrderItem item : orderItemList) {
+            orders.add(item.getOrder());
+        }
+        return orders;
+
+    }
+
 }

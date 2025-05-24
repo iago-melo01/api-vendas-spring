@@ -1,14 +1,8 @@
 package com.educandoweb.projetospring.config;
 
-import com.educandoweb.projetospring.entities.Category;
-import com.educandoweb.projetospring.entities.Order;
-import com.educandoweb.projetospring.entities.Product;
+import com.educandoweb.projetospring.entities.*;
 import com.educandoweb.projetospring.entities.enums.OrderStatus;
-import com.educandoweb.projetospring.entities.User;
-import com.educandoweb.projetospring.repositories.CategoryRepository;
-import com.educandoweb.projetospring.repositories.OrderRepository;
-import com.educandoweb.projetospring.repositories.ProductRepository;
-import com.educandoweb.projetospring.repositories.UserRepository;
+import com.educandoweb.projetospring.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +27,9 @@ public class TestConfig implements CommandLineRunner {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private OrderItemRepository orderItemRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -64,9 +61,20 @@ public class TestConfig implements CommandLineRunner {
         User u2= new User("pau" ,"email@gmail.com" ,"senha", "8399999999");
 
         Order o1= new Order(null, Instant.now().plus(1, ChronoUnit.DAYS), OrderStatus.PAID, u1);
-        Order o2= new Order(null, Instant.now().plus(5, ChronoUnit.DAYS), OrderStatus.WAITING_PAYMENT, u1);
+        Order o2= new Order(null, Instant.now().plus(5, ChronoUnit.DAYS), OrderStatus.WAITING_PAYMENT, u2);
+        Order o3= new Order(null, Instant.now().plus(1, ChronoUnit.DAYS), OrderStatus.PAID, u1);
+        Order o4= new Order(null, Instant.now().plus(5, ChronoUnit.DAYS), OrderStatus.WAITING_PAYMENT, u2);
+
 
         userRepository.saveAll(Arrays.asList(u1, u2));
-        orderRepository.saveAll(Arrays.asList(o1, o2));
+        orderRepository.saveAll(Arrays.asList(o1, o2, o3, o4));
+
+        OrderItem oi1 = new OrderItem(o1, p1, 2, p3.getPrice());
+        OrderItem oi2 = new OrderItem(o1, p2, 2, p4.getPrice());
+        OrderItem oi3 = new OrderItem(o1, p3, 3, p2.getPrice());
+        OrderItem oi4 = new OrderItem(o1, p4, 4, p1.getPrice());
+
+        orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
+
     }
 }
