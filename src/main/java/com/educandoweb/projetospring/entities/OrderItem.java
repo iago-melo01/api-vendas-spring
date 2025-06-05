@@ -27,6 +27,7 @@ public class OrderItem implements Serializable {
         id.setOrder(order);
         id.setProduct(product);
 
+
         this.quantity = quantity;
         this.price = price;
     }
@@ -76,5 +77,9 @@ public class OrderItem implements Serializable {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Double getSubTotal(){
+        return quantity * price;
     }
 }

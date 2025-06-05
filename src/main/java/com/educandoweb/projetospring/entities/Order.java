@@ -40,6 +40,9 @@ public class Order implements Serializable {
     @OneToMany(mappedBy = "id.order")
     private Set<OrderItem> items = new HashSet<>();
 
+    @Column(name = "total")
+    private Double total;
+
     public Order(Long id, Instant moment, OrderStatus orderStatus, User client, Payment payment) {
         this.id = id;
         this.moment = moment;
@@ -85,6 +88,17 @@ public class Order implements Serializable {
     }
     public void setId(Long id) {
         this.id = id;
+    }
+    public Double getTotal(){
+        Double total = 0.0;
+        for (OrderItem oi : items){
+            total += oi.getSubTotal();
+        }
+        return total;
+    }
+
+    public void setTotal(Double value){
+        this.total = value;
     }
 
     public Payment getPayment() {
