@@ -10,6 +10,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import com.educandoweb.projetospring.entities.Payment;
 
 @Entity
 @Table(name= "tb_order")
@@ -19,7 +20,7 @@ public class Order implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern ="yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     private Instant moment;
@@ -32,20 +33,25 @@ public class Order implements Serializable {
     @Column(name = "status")
     private Integer orderStatus;
 
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL) //Estamos mapeando as duas entidades para ter o mesmo id
+     // ou seja, o order id vai ser o mesmo do payment id.  o cascade está fazendo isso
+    private Payment payment;
 
     @OneToMany(mappedBy = "id.order")
     private Set<OrderItem> items = new HashSet<>();
 
-    public Order(Integer id, Instant moment, OrderStatus orderStatus, User client) {
+    public Order(Long id, Instant moment, OrderStatus orderStatus, User client, Payment payment) {
         this.id = id;
         this.moment = moment;
         this.orderStatus = orderStatus.getCode();
         this.client = client;
+        this.payment = payment;
     }
-    public Order( Instant moment, OrderStatus orderStatus, User client) {
+    public Order(Integer id, Instant moment, OrderStatus orderStatus, User client) {
         this.moment = moment;
         this.orderStatus = orderStatus.getCode();
         this.client = client;
+
     }
 
 
@@ -65,7 +71,7 @@ public class Order implements Serializable {
         return Objects.hashCode(id);
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -77,10 +83,17 @@ public class Order implements Serializable {
         if(orderStatus != null)
             this.orderStatus = orderStatus.getCode();
     }
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
 
     public Set<OrderItem> getItems() {
         return items;

@@ -9,7 +9,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.time.Instant;
+import java.time.chrono.ChronoPeriod;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.Arrays;
 
 @Configuration
@@ -30,6 +32,9 @@ public class TestConfig implements CommandLineRunner {
 
     @Autowired
     private OrderItemRepository orderItemRepository;
+
+    @Autowired
+    private PaymentRepository paymentRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -60,6 +65,8 @@ public class TestConfig implements CommandLineRunner {
         User u1= new User("pinto" ,"email@gmail.com" ,"senha", "8399999999");
         User u2= new User("pau" ,"email@gmail.com" ,"senha", "8399999999");
 
+
+
         Order o1= new Order(null, Instant.now().plus(1, ChronoUnit.DAYS), OrderStatus.PAID, u1);
         Order o2= new Order(null, Instant.now().plus(5, ChronoUnit.DAYS), OrderStatus.WAITING_PAYMENT, u2);
         Order o3= new Order(null, Instant.now().plus(1, ChronoUnit.DAYS), OrderStatus.PAID, u1);
@@ -75,6 +82,13 @@ public class TestConfig implements CommandLineRunner {
         OrderItem oi4 = new OrderItem(o1, p4, 4, p1.getPrice());
 
         orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
+
+        Payment pay1 = new Payment(null, Instant.now(), o1);
+        //para salvar um objeto dependente de uma associação OneToOne, não precisa chamar o repository do proprio
+        //objeto não.
+        o1.setPayment(pay1);
+
+        orderRepository.save(o1);
 
     }
 }
