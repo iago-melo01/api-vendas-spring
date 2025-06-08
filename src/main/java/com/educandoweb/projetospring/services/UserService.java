@@ -24,4 +24,8 @@ public class UserService {
                 orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
     }
+
+    public User insert(User obj){
+        return userRepository.save(obj); // método save retorna um objeto, após salvar
+    }
 }
