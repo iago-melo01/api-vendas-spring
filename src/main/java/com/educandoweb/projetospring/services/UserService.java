@@ -2,8 +2,10 @@ package com.educandoweb.projetospring.services;
 
 import com.educandoweb.projetospring.entities.User;
 import com.educandoweb.projetospring.repositories.UserRepository;
+import com.educandoweb.projetospring.services.exceptions.DBIntegrityException;
 import com.educandoweb.projetospring.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +31,17 @@ public class UserService {
     }
 
     public void delete(Long id) {
-        userRepository.deleteById(id);
+        Optional<User> user = userRepository.findById(id);
+        if(user.isEmpty())
+            throw new ResourceNotFoundException(id);
+        else{
+            try{
+                userRepository.deleteById(id);
+            }catch(DataIntegrityViolationException e){
+                throw new DBIntegrityException(e.getMessage());
+            }
+        }
+
     }
 
     public User update(Long id, User obj) {

@@ -64,6 +64,7 @@ public class TestConfig implements CommandLineRunner {
 
         User u1= new User("pinto" ,"email@gmail.com" ,"senha", "8399999999");
         User u2= new User("pau" ,"email@gmail.com" ,"senha", "8399999999");
+        User u3= new User("Iago" ,"email@gmail.com" ,"senha1234", "8399999999");
 
 
 
