@@ -4,6 +4,7 @@ import com.educandoweb.projetospring.entities.User;
 import com.educandoweb.projetospring.repositories.UserRepository;
 import com.educandoweb.projetospring.services.exceptions.DBIntegrityException;
 import com.educandoweb.projetospring.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -31,26 +32,28 @@ public class UserService {
     }
 
     public void delete(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        if(user.isEmpty())
-            throw new ResourceNotFoundException(id);
-        else{
-            try{
-                userRepository.deleteById(id);
-            }catch(DataIntegrityViolationException e){
-                throw new DBIntegrityException(e.getMessage());
-            }
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+
+        
+        try {
+            userRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DBIntegrityException(e.getMessage());
         }
+
 
     }
 
     public User update(Long id, User obj) {
-        User entity = userRepository.getReferenceById(id);
+        User entity = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+
         updateData(entity, obj);
         return userRepository.save(entity);
     }
 
+    // This function updates the data of the object "entity" with the data provided by the object "obj"
     private void updateData(User entity, User obj) {
+
         entity.setPhone(obj.getPhone());
         entity.setName(obj.getName());
         entity.setEmail(obj.getEmail());
