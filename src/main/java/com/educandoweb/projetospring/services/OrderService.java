@@ -2,6 +2,7 @@ package com.educandoweb.projetospring.services;
 
 import com.educandoweb.projetospring.entities.Order;
 import com.educandoweb.projetospring.repositories.OrderRepository;
+import com.educandoweb.projetospring.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,6 @@ public class OrderService {
     }
 
     public Order findById(Long id){
-        return orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+        return orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
     }
 }
